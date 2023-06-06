@@ -32,7 +32,8 @@
 
   --timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   --animation-duration: 250ms;
-  font-size: calc(16px + (24 - 16)*(100vw - 320px)/(1920 - 320));
+  --goit-color: rgb(241, 92, 39);
+  --light-white: #f1f1f1;
 }
 
 * {
@@ -108,6 +109,7 @@ body, .search-bar {
   --gradient_spot4_x: 90%;
   --gradient_spot4_y: 20%;
 }
+
 .search-section {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
     Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
@@ -135,12 +137,6 @@ body, .search-bar {
   text-align: center;
   padding: 20px;
 }
-
-
-// body {
-// 	background: #f1f1f1;
-// 	height: 100vh;
-// }
 
 .search-form input,
 .search-btn,
@@ -176,7 +172,7 @@ body, .search-bar {
 .search-form input {
   background: transparent;
   border-radius: 1.5em;
-  box-shadow: 0 0 0 0.4em rgb(241, 92, 39) inset;
+  box-shadow: 0 0 0 0.4em var(--goit-color) inset;
   padding: 0.75em;
   transform: translate(0.5em, 0.5em) scale(0.5);
   transform-origin: 100% 0;
@@ -190,7 +186,6 @@ body, .search-bar {
 }
 .search-form input:focus,
 .search-form input:valid {
-  // background: #fff;
   border-radius: 0.375em 0 0 0.375em;
   box-shadow: 0 0 0 0.1em #d9d9d9 inset;
   transform: scale(1);
@@ -199,7 +194,7 @@ body, .search-bar {
   backdrop-filter: blur(40px);
 }
 .search-btn {
-  background: rgb(241, 92, 39);
+  background: var(--goit-color);
   border-radius: 0 0.75em 0.75em 0 / 0 1.5em 1.5em 0;
   padding: 0.75em;
   position: relative;
@@ -215,14 +210,14 @@ body, .search-bar {
 }
 .search-btn:before {
   border-radius: 50%;
-  box-shadow: 0 0 0 0.2em #f1f1f1 inset;
+  box-shadow: 0 0 0 0.2em var(--light-white) inset;
   top: 0.75em;
   left: 0.75em;
   width: 1.2em;
   height: 1.2em;
 }
 .search-btn:after {
-  background: #f1f1f1;
+  background: var(--light-white);
   border-radius: 0 0.25em 0.25em 0;
   top: 51%;
   left: 51%;
@@ -241,7 +236,7 @@ body, .search-bar {
 /* Active state */
 .search-form input:focus + .search-btn,
 .search-form input:valid + .search-btn {
-  background: rgb(241, 92, 39);
+  background: var(--goit-color);
   border-radius: 0 0.375em 0.375em 0;
   transform: scale(1);
 }
@@ -264,13 +259,13 @@ body, .search-bar {
 @media screen and (prefers-color-scheme: dark) {
   body,
   input {
-    color: #f1f1f1;
+    color: var(--light-white);
   }
   body {
     background: #171717;
   }
   .search-form input {
-    box-shadow: 0 0 0 0.4em #f1f1f1 inset;
+    box-shadow: 0 0 0 0.4em #var(--light-white) inset;
   }
   .search-form input:focus,
   .search-form input:valid {
@@ -278,7 +273,7 @@ body, .search-bar {
     box-shadow: 0 0 0 0.1em #3d3d3d inset;
   }
   .search-btn {
-    background: #f1f1f1;
+    background: var(--light-white);
   }
 }
 
@@ -349,7 +344,7 @@ body, .search-bar {
 
 .more-btn {
   min-width: 100px;
-  background-color: rgb(241, 92, 39);
+  background-color: var(--goit-color);
   color: #fff;
   border-radius: 0.375em;
   padding: 0.75em;
@@ -379,13 +374,21 @@ body, .search-bar {
   clip-path: inset(50%);
   margin: -1px;
 }
+.wrapper{
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: rgba(253, 253, 253, 0.5);
+  // opacity: 0.5;
+  // backdrop-filter: blur(40px);
+}
 
 .loader {
   width: 32px;
   height: 32px;
   position: fixed;
   border-radius: 50%;
-  color: rgb(241, 92, 39);
+  color: var(--goit-color);
   animation: fill 1s ease-in infinite alternate;
   top: 48%;
   left: 50%;
@@ -411,22 +414,17 @@ body, .search-bar {
  0% {  box-shadow: 0 0 0 2px inset }
  100%{ box-shadow: 0 0 0 10px inset }
 }
-.wrapper{
-  position: fixed;
-  width: 100%;
-  height: 100%;
-}
 
 body .sl-wrapper .sl-image .sl-caption{
-  background: rgb(241, 92, 39);
+  background: var(--goit-color);
 }
 
 body .sl-wrapper .sl-navigation button,
 body .sl-wrapper .sl-close,
 body .sl-wrapper .sl-counter{
-color:rgb(241, 92, 39);
+color:var(--goit-color);
 }
 
 body .sl-spinner{
-  border-color: rgb(241, 92, 39);
+  border-color: var(--goit-color);
 }
