@@ -12,12 +12,12 @@ const refs = {
   gallery: document.querySelector('.gallery'),
   wrapper: document.querySelector('.wrapper'),
 };
-// function createSimpleLightBox() {
-  const lightBox = new SimpleLightbox('.gallery a', {
-    captionsData: 'alt',
-    captionDelay: 250,
-  });
-// }
+
+const lightBox = new SimpleLightbox('.gallery a', {
+  captionsData: 'alt',
+  captionDelay: 250,
+});
+
 const searchingApiServices = new SearchingApiServices();
 
 refs.searchForm.addEventListener('submit', onSearch);
@@ -25,7 +25,7 @@ refs.btnMore.addEventListener('click', onLoadMore);
 
 async function onSearch(e) {
   e.preventDefault();
-showLoader();
+  showLoader();
   searchingApiServices.query = e.currentTarget.elements.searchQuery.value;
   searchingApiServices.resetPage();
   await searchingApiServices.fetchPhotoCards().then(({ data: { hits } }) => {
@@ -38,17 +38,17 @@ showLoader();
     refs.section.classList.add('to-top');
     refs.btnMore.classList.remove('hidden');
     refs.gallery.classList.remove('hidden');
-    });
-    hideLoader();
+  });
+  hideLoader();
 }
 
 async function onLoadMore() {
   showLoader();
- await searchingApiServices
+  await searchingApiServices
     .fetchPhotoCards()
     .then(({ data: { hits } }) => appendPhotoCardsMarkup(hits));
-    hideLoader();
-    lightBox.refresh();
+  hideLoader();
+  lightBox.refresh();
 }
 
 function appendPhotoCardsMarkup(hits) {
@@ -59,8 +59,6 @@ function appendPhotoCardsMarkup(hits) {
 function clearGallery() {
   refs.gallery.innerHTML = '';
 }
-
-
 
 function failNotiflix() {
   Notiflix.Notify.failure(
@@ -73,12 +71,10 @@ function failNotiflix() {
 }
 
 function showLoader() {
-  console.log('show');
   refs.wrapper.classList.remove('hidden');
 }
 
 function hideLoader() {
-  console.log('show');
   refs.wrapper.classList.add('hidden');
 }
 
@@ -93,4 +89,3 @@ function hideLoader() {
 //     behavior: 'smooth',
 //   });
 // }
-

@@ -23,17 +23,6 @@ export default class SearchingApiServices {
     return data;
   }
 
-  // async fetchPhotoCards() {
-  //   return await fetch(
-  //     `${BASE_URL}?${searchParams}&q=${this.searchQuery}&page=${this.page}`
-  //   )
-  //     .then(response => response.json())
-  //     .then(({hits}) => {
-  //       this.incrementPage();
-  //       return hits;
-  //     });
-  // }
-
   incrementPage() {
     this.page += 1;
   }
