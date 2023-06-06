@@ -6,11 +6,12 @@ import Notiflix from 'notiflix';
 
 const refs = {
   section: document.querySelector('.search-section'),
-  input: document.querySelector('.search-form > input'),
+  // input: document.querySelector('.search-form > input'),
   searchForm: document.querySelector('.search-form'),
   btnMore: document.querySelector('.more-btn'),
   gallery: document.querySelector('.gallery'),
   wrapper: document.querySelector('.wrapper'),
+  loader: document.querySelector('.loader')
 };
 
 const lightBox = new SimpleLightbox('.gallery a', {
@@ -72,10 +73,12 @@ function failNotiflix() {
 
 function showLoader() {
   refs.wrapper.classList.remove('hidden');
+  refs.loader.classList.remove('hidden')
 }
 
 function hideLoader() {
   refs.wrapper.classList.add('hidden');
+  refs.loader.classList.add('hidden');
 }
 
 // function scroll() {
