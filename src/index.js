@@ -56,11 +56,12 @@ async function onLoadMore() {
   showLoaderMore();
   await searchingApiServices
     .fetchPhotoCards()
-    .then(({ data: { hits } }) => {
+    .then(({ data: { totalHits, hits } }) => {
       appendPhotoCardsMarkup(hits);
       if (hits.length === 0) {
         window.removeEventListener('scroll', scrollHandler);
         hideLoaderMore();
+        totalNotiflix(totalHits);
         return;
       }
       hideLoaderMore();
@@ -89,6 +90,13 @@ function failNotiflix() {
   );
 }
 
+function totalNotiflix(totalHits) {
+  Notiflix.Notify.success(`We're sorry, but you've reached the end of search results. The total pictures ${totalHits}`, {
+    clickToClose: true,
+    timeout: 4000,
+  });
+}
+
 function showLoader() {
   refs.wrapper.classList.remove('hidden');
   refs.loader.classList.remove('hidden');
@@ -113,3 +121,4 @@ function loadMoreByScroll() {
     onLoadMore();
   }
 }
+
