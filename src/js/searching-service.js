@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from 'axios';
 
 const BASE_URL = 'https://pixabay.com/api/';
 const searchParams = new URLSearchParams({
@@ -6,7 +6,7 @@ const searchParams = new URLSearchParams({
   image_type: 'photo',
   orientation: 'horizontal',
   safesearch: 'true',
-  per_page: '40'
+  per_page: '40',
 });
 
 export default class SearchingApiServices {
@@ -18,8 +18,18 @@ export default class SearchingApiServices {
   async fetchPhotoCards() {
     const data = await axios({
       method: 'get',
-      url: `${BASE_URL}?${searchParams}&q=${this.searchQuery}&page=${this.page}`});
-      this.incrementPage();
+      url: `${BASE_URL}?${searchParams}&q=${this.searchQuery}&page=${this.page}`,
+    }).catch(function (error) {
+      if (error.response) {
+        console.log(error.response.status);
+      } else if (error.request) {
+        console.log(error.request);
+      } else {
+        console.log('Error', error.message);
+      }
+      console.log(error.config);
+    });
+    this.incrementPage();
     return data;
   }
 

@@ -3,15 +3,15 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 import photoCardTmp from './templates/photo-card.hbs';
 import SearchingApiServices from './js/searching-service';
 import Notiflix from 'notiflix';
+import throttle from 'lodash.throttle';
 
 const refs = {
   section: document.querySelector('.search-section'),
-  // input: document.querySelector('.search-form > input'),
   searchForm: document.querySelector('.search-form'),
-  btnMore: document.querySelector('.more-btn'),
   gallery: document.querySelector('.gallery'),
   wrapper: document.querySelector('.wrapper'),
-  loader: document.querySelector('.loader')
+  loader: document.querySelector('.loader'),
+  loaderMore: document.querySelector('.loader-more'),
 };
 
 const lightBox = new SimpleLightbox('.gallery a', {
@@ -21,34 +21,52 @@ const lightBox = new SimpleLightbox('.gallery a', {
 
 const searchingApiServices = new SearchingApiServices();
 
+let scrollHandler = throttledFn();
+
+function throttledFn() {
+  return throttle(loadMoreByScroll, 300);
+}
+
 refs.searchForm.addEventListener('submit', onSearch);
-refs.btnMore.addEventListener('click', onLoadMore);
 
 async function onSearch(e) {
   e.preventDefault();
   showLoader();
   searchingApiServices.query = e.currentTarget.elements.searchQuery.value;
   searchingApiServices.resetPage();
-  await searchingApiServices.fetchPhotoCards().then(({ data: { hits } }) => {
-    if (hits.length === 0) {
-      failNotiflix();
-      return;
-    }
-    clearGallery();
-    appendPhotoCardsMarkup(hits);
-    refs.section.classList.add('to-top');
-    refs.btnMore.classList.remove('hidden');
-    refs.gallery.classList.remove('hidden');
-  });
+  await searchingApiServices
+    .fetchPhotoCards()
+    .then(({ data: { hits } }) => {
+      if (hits.length === 0) {
+        failNotiflix();
+        window.removeEventListener('scroll', scrollHandler);
+        return;
+      }
+      clearGallery();
+      appendPhotoCardsMarkup(hits);
+      refs.section.classList.add('to-top');
+      refs.gallery.classList.remove('hidden');
+      window.addEventListener('scroll', scrollHandler);
+    })
+    .catch(error => console.error(error));
   hideLoader();
 }
 
 async function onLoadMore() {
-  showLoader();
+  showLoaderMore();
   await searchingApiServices
     .fetchPhotoCards()
-    .then(({ data: { hits } }) => appendPhotoCardsMarkup(hits));
-  hideLoader();
+    .then(({ data: { hits } }) => {
+      appendPhotoCardsMarkup(hits);
+      if (hits.length === 0) {
+        window.removeEventListener('scroll', scrollHandler);
+        hideLoaderMore();
+        return;
+      }
+      hideLoaderMore();
+    })
+    .catch(error => console.error(error));
+
   lightBox.refresh();
 }
 
@@ -73,7 +91,7 @@ function failNotiflix() {
 
 function showLoader() {
   refs.wrapper.classList.remove('hidden');
-  refs.loader.classList.remove('hidden')
+  refs.loader.classList.remove('hidden');
 }
 
 function hideLoader() {
@@ -81,14 +99,17 @@ function hideLoader() {
   refs.loader.classList.add('hidden');
 }
 
-// function scroll() {
-//   const { height: cardHeight } = document
-//     .querySelector('.gallery')
-//     .firstElementChild.getBoundingClientRect();
-//   console.log('cardHeight:', cardHeight);
+function showLoaderMore() {
+  refs.loaderMore.classList.remove('hidden');
+}
 
-//   window.scrollBy({
-//     top: cardHeight * 2,
-//     behavior: 'smooth',
-//   });
-// }
+function hideLoaderMore() {
+  refs.loaderMore.classList.add('hidden');
+}
+
+function loadMoreByScroll() {
+  const documentRect = document.documentElement.getBoundingClientRect();
+  if (documentRect.bottom < document.documentElement.clientHeight + 400) {
+    onLoadMore();
+  }
+}
