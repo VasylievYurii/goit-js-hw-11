@@ -24,7 +24,7 @@ const searchingApiServices = new SearchingApiServices();
 let scrollHandler = throttledFn();
 
 function throttledFn() {
-  return throttle(loadMoreByScroll, 300);
+  return throttle(loadMoreByScroll, 500);
 }
 
 refs.searchForm.addEventListener('submit', onSearch);
